@@ -1,0 +1,30 @@
+{
+  "name": "nft_diy",
+  "version": "1.0.0",
+  "description": "a diy practice to play with nft creation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philipyaya2005/nft_diy.git"
+  },
+  "keywords": [
+    "nft"
+  ],
+  "author": "fhe31",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philipyaya2005/nft_diy/issues"
+  },
+  "homepage": "https://github.com/philipyaya2005/nft_diy#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.4",
+    "hardhat": "^2.9.3"
+  }
+}
