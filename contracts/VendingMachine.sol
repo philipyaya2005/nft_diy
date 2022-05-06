@@ -25,7 +25,8 @@ contract VendingMachine {
     }
 
     function purchaseSnack(uint amount) public payable {
-        console.log("Sender eth value %s", msg.value);
+        console.log("Sender's wallet eth value %s", msg.value);
+
         require(msg.value >=  amount * 2 ether, "You must pay at least 2 ether per snack");
         require(snackBalances[address(this)] >= amount, "Not enough snacks in stock to fullfill purchase request");
 

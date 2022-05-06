@@ -5,8 +5,8 @@ describe("VendingMachines", function () {
   // A common pattern is to declare some variables, and assign them in the
   // `before` and `beforeEach` callbacks.
 
-  let Token;
-  let hardhatToken;
+  // let Token;
+  // let hardhatToken;
   let owner;
   let addr1;
 
@@ -19,28 +19,48 @@ describe("VendingMachines", function () {
 
   it("Be able to do snack transactions", async function () {
     const VendingMachine = await ethers.getContractFactory("VendingMachine");
-    const initalSnacks = 100;
-    const vendingmachine = await VendingMachine.deploy(initalSnacks);
+    let snackStocks = 100;
+    const vendingmachine = await VendingMachine.deploy(snackStocks);
     await vendingmachine.deployed();
 
-    expect(await vendingmachine.getVendingMachineBalance()).to.equal(initalSnacks);
+    expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
 
-    // puchase 10 snacks
-    await vendingmachine.purchaseSnack(10);
-    expect(await vendingmachine.getVendingMachineBalance()).to.equal(initalSnacks - 10);
+    // purchase 10 snacks
+    await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20")} );
+    snackStocks -= 10;
+
+    // purchase then restock snacks
+    await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20")} );
+    snackStocks -= 10;
+    expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
 
     // restore 10 snacks and check
-    // vendingmachine.addValue(ethers.utils.parseEther("20000000000000000000"));
-    await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20000000000000000000")} );
-    expect(await vendingmachine.getVendingMachineBalance()).to.equal(initalSnacks - 10);
-
     await vendingmachine.restockSnacks(10);
-    expect(await vendingmachine.getVendingMachineBalance()).to.equal(initalSnacks);
-    // const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    snackStocks += 10;
+    expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
+  });
 
-    // // wait until the transaction is mined
-    // await setGreetingTx.wait();
+  it("Test not enough eth", async function () {
+    const VendingMachine = await ethers.getContractFactory("VendingMachine");
+    const snackStocks = 100;
+    const vendingmachine = await VendingMachine.deploy(snackStocks);
+    await vendingmachine.deployed();
 
-    // expect(await greeter.greet()).to.equal("Hola, mundo!");
+
+    // purchase 10 snacks
+    const buySnack = vendingmachine.purchaseSnack(1);
+    await expect(buySnack).to.be.revertedWith("You must pay at least 2 ether per snack");
+    // await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20")} );
+    // snackStocks -= 10;
+
+    // // purchase then restock snacks
+    // await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20")} );
+    // snackStocks -= 10;
+    // expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
+
+    // // restore 10 snacks and check
+    // await vendingmachine.restockSnacks(10);
+    // snackStocks += 10;
+    // expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
   });
 });
