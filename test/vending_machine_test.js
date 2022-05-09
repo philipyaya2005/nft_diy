@@ -50,17 +50,5 @@ describe("VendingMachines", function () {
     // purchase 10 snacks
     const buySnack = vendingmachine.purchaseSnack(1);
     await expect(buySnack).to.be.revertedWith("You must pay at least 2 ether per snack");
-    // await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20")} );
-    // snackStocks -= 10;
-
-    // // purchase then restock snacks
-    // await vendingmachine.purchaseSnack(10, {value: ethers.utils.parseEther("20")} );
-    // snackStocks -= 10;
-    // expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
-
-    // // restore 10 snacks and check
-    // await vendingmachine.restockSnacks(10);
-    // snackStocks += 10;
-    // expect(await vendingmachine.getVendingMachineBalance()).to.equal(snackStocks);
   });
 });
